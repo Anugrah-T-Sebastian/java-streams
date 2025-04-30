@@ -5,7 +5,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Optional;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -62,6 +61,7 @@ public class StreamQuestions {
                                 .stream(str.split(" "))
                                 .max(Comparator.comparing(s -> s.length()))
                                 .orElseThrow(() -> new RuntimeException("Error in question 1"));
+        System.out.println("Longest word: " + maxLength);
 
         //2. Remove duplicates from the string and return in the same order
         String str2 = "dajnjadskasd";
