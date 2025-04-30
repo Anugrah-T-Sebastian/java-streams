@@ -1,17 +1,59 @@
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 public class StreamQuestions {
-    public static void main(String[] args) {
 
-        String commonString = "I am learning streams API in Java in Java Environment";
-        int[] commonNumArr = {1, 2 , 4, 7, 8, 6, 1, 0, 2, 3, 6, 20, 30, 100, 78, 69, 0};
+    public static class Employee {
+        String name;
+        String email;
+
+        public Employee(String name, String email) {
+            this.name = name;
+            this.email = email;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getEmail() {
+            return email;
+        }
+
+        public void setEmail(String email) {
+            this.email = email;
+        }
+
+
+    }
+     
+    public static void main(String[] args) {
+        final String commonString = "I am learning streams API in Java in Java Environment";
+        final int[] commonNumArr = {1, 2 , 4, 7, 8, 6, 1, 0, 2, 3, 6, 20, 30, 100, 78, 69, 0};
+        final String[] mixedList = {"abc", "123", "456", "xyz"};
+        final List<Integer> numberList1 = Arrays.asList(1, 2, 3, 4);
+        final List<Integer> numberList2 = Arrays.asList(6, 7, 5, 9, 10);
+        final List<String> alphanumericList = Arrays.asList("a124", "1dsa78", "weq78985assd");
+
+        final List<Employee> employees = new ArrayList<>();
+        employees.add(new Employee("ABC", "abc@abc.com"));
+        employees.add(new Employee("pqr", "pqr@pqr.com"));
+        employees.add(new Employee("xyz", "xyz@xyz.com"));
+       
 
 
         //1. Given a sentence find the word that has the highest length
@@ -140,7 +182,6 @@ public class StreamQuestions {
 
 
         //14. Given a list of strings, create a list that contains only integers
-        String[] mixedList = {"abc", "123", "456", "xyz"};
         List<Integer> integerList = Arrays
             .stream(mixedList)
             .filter(s -> {
@@ -248,5 +289,135 @@ public class StreamQuestions {
         System.out.println("Contains distinct values: " + hasDistinctValues);
 
         //21. Given the string[] group the strings based on the middle character
+        String[] strings = {"ewe", "jji", "jhj", "kwk", "aha"};
+        List<List<String>> groupedStringsByMiddleChar = Arrays
+            .stream(strings)
+            .collect(Collectors.groupingBy((String x) -> x.charAt(x.length() / 2)))
+            .values()
+            .stream()
+            .collect(Collectors.toList());
+
+        System.err.println("Strings grouped by middle character: " + groupedStringsByMiddleChar);
+
+        //22. Find the sum of all the elements in a list
+        Integer aggregateSum = Arrays
+            .stream(commonNumArr)
+            .reduce(0, (a, b) -> a + b);
+        System.out.println("Agregate sum: "+ aggregateSum);
+
+        //23. Sort a list of strings in alphabetical order
+        List<String> sortedStringArray = Arrays
+            .stream(commonString.split(" "))
+            .sorted()
+            .collect(Collectors.toList());
+
+        System.out.println("Sorted string array: " + sortedStringArray);
+
+        //24. Convert a list of integers to a list of their squares
+        List<Integer> squaredNumber = Arrays
+            .stream(commonNumArr)
+            .boxed()
+            .map(i -> i * i)
+            .collect(Collectors.toList());
+        
+        System.err.println("Squared number: " + squaredNumber);
+
+        //25. Find and print the distinct odd numbers
+        List<Integer> oddDistinctNumbers = Arrays
+            .stream(commonNumArr)
+            .boxed()
+            .filter(e -> e%2 != 0)
+            .distinct()
+            .collect(Collectors.toList());
+
+        System.out.println("Odd distinct number: " + oddDistinctNumbers);
+
+        //26. Find the union of two lists of integers
+        List<Integer> listUnion = Stream
+            .concat(numberList1.stream(),numberList2.stream())
+            .collect(Collectors.toList());
+
+        System.out.println("Union of lists: "+ listUnion);
+
+        //27 Find the kth smallest element in a list of integers
+        long kth = 3;
+        Integer thirdSmallestNumber = numberList1
+            .stream()
+            .sorted()
+            .skip(kth)
+            .findFirst()
+            .get();
+        System.out.println("Third smallest number: "+ thirdSmallestNumber);
+
+        //28. Remove all non-numeric characters from a list
+        List<Integer> numericValuesList = alphanumericList
+            .stream()
+            .map(e -> {
+                String numericValue = Arrays
+                        .stream(e.split(""))
+                        .filter(i -> {
+                            try {
+                                Integer.parseInt(i);
+                                return true;
+                            }
+                            catch(Exception ex) {
+                                return false;
+                            }
+                        })
+                        .collect(Collectors.joining());
+                return Integer.parseInt(numericValue);
+            })
+            .collect(Collectors.toList());
+        System.out.println("Numeric characters from list: "+ numericValuesList);
+        
+        numericValuesList = alphanumericList
+            .stream()
+            .map(e -> Integer.parseInt(e.replaceAll("[^0-9]+", "")))
+            .collect(Collectors.toList());
+        System.out.println("Numeric characters from list: "+ numericValuesList);
+
+        //29. Find and print strings containing only digits
+        List<Integer> filteredNumericList = Arrays
+            .stream(mixedList)
+            .filter(e -> e.replaceAll("[^0-9]+", "").length() == e.length())
+            .map(e -> Integer.parseInt(e))
+            .collect(Collectors.toList());
+
+        System.out.println("String containing only digits: "+ filteredNumericList);
+        
+        filteredNumericList = Arrays
+            .stream(mixedList)
+            .filter(e -> e.matches("[0-9]+"))
+            .map(e -> Integer.parseInt(e))
+            .collect(Collectors.toList());
+        System.out.println("String containing only digits: "+ filteredNumericList);
+
+        //30. Convert a list of strings to uppercase
+        List<String> upperCaseStringsList = Arrays
+            .stream(commonString.split(" "))
+            .map((String s) -> s.toUpperCase(Locale.US))
+            .collect(Collectors.toList());
+        System.out.println("Upper case word: "+ upperCaseStringsList);
+
+        //31. Calculate the average of all the numbers
+        double asDouble = Arrays
+            .stream(commonNumArr)
+            .average()
+            .getAsDouble();
+        System.out.println("Average: "+ asDouble);
+
+        //32. Find the intersection of two lists using Java streams
+        List<Integer> commonNumbersList = numberList1
+            .stream()
+            .filter(x -> numberList2.contains(x))
+            .collect(Collectors.toList());
+        System.out.println("Intersectiom of lists: "+ commonNumbersList);
+
+        //33. Find the occurrence of domains using Java streams
+        Map<String, Long> emailDomainCount = employees
+            .stream()
+            .map(e -> e.getEmail().substring(e.getEmail().indexOf("@")))
+            .collect(Collectors.groupingBy(d -> d, Collectors.counting()));
+        System.out.println("Domain count: "+ emailDomainCount);
     }
 }
