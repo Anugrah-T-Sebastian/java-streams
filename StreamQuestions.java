@@ -1,16 +1,11 @@
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.TreeMap;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 public class StreamQuestions {
     public static void main(String[] args) {
@@ -251,5 +246,7 @@ public class StreamQuestions {
             .collect(Collectors.toSet())
             .size() == commonNumArr.length;
         System.out.println("Contains distinct values: " + hasDistinctValues);
+
+        //21. Given the string[] group the strings based on the middle character
     }
 }
