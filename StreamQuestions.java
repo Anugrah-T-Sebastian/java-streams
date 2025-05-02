@@ -16,10 +16,12 @@ public class StreamQuestions {
 
     public static class Employee {
         String name;
-        String email;
+        int age;
+        List<String> email;
 
-        public Employee(String name, String email) {
+        public Employee(String name, int age, List<String> email) {
             this.name = name;
+            this.age = age;
             this.email = email;
         }
 
@@ -31,11 +33,15 @@ public class StreamQuestions {
             this.name = name;
         }
 
-        public String getEmail() {
+        public List<String> getEmail() {
             return email;
         }
 
-        public void setEmail(String email) {
+        public int getAge() {
+            return this.age;
+        }
+
+        public void setEmail(List<String> email) {
             this.email = email;
         }
 
@@ -52,9 +58,9 @@ public class StreamQuestions {
         final List<String> alphanumericList = Arrays.asList("a124", "1dsa78", "weq78985assd");
 
         final List<Employee> employees = new ArrayList<>();
-        employees.add(new Employee("ABC", "abc@abc.com"));
-        employees.add(new Employee("pqr", "pqr@pqr.com"));
-        employees.add(new Employee("xyz", "xyz@xyz.com"));
+        employees.add(new Employee("ABC", 26, Arrays.asList("abc@abc.com")));
+        employees.add(new Employee("PQR", 30, Arrays.asList("pqr@pqr.com")));
+        employees.add(new Employee("XYZ", 35, Arrays.asList("xyz@xyz.com")));
        
 
 
@@ -419,7 +425,7 @@ public class StreamQuestions {
         //33. Find the occurrence of domains using Java streams
         Map<String, Long> emailDomainCount = employees
             .stream()
-            .map(e -> e.getEmail().substring(e.getEmail().indexOf("@")))
+            .map(e -> e.getEmail().get(0).substring(e.getEmail().get(0).indexOf("@")))
             .collect(Collectors.groupingBy(d -> d, Collectors.counting()));
         System.out.println("Domain count: "+ emailDomainCount);
 
@@ -483,6 +489,38 @@ public class StreamQuestions {
             .orElse("");
         System.out.println("Upper case names: " + uppercaseNames);
 
-        //42. 
+        //41. Difference between map and flatMap
+        //map() transforms each element of the stream into another element. It is a one-to-one mapping
+        List<List<String>> mapEmails = employees
+            .stream()
+            .map(e -> e.getEmail())
+            .collect(Collectors.toList());
+        
+        //flatMap() tranforms + flattens the resulting streams into one stream, usually when dealing with collections of collections
+        List<String> flattenedEmails = employees
+            .stream()
+            .flatMap(e -> e.getEmail().stream())
+            .collect(Collectors.toList());
+        System.out.println("Mapped emails:" + mapEmails);
+        System.out.println("Flat-Mapped emails:" + flattenedEmails);
+
+        //43. Concatenate 2 streams
+        Stream<String> stream1 = Stream.of("Java", "Python");
+        Stream<String> stream2 = Stream.of("C++", "C#");
+        List<String> combinedStream = Stream
+            .concat(stream1, stream2)
+            .collect(Collectors.toList());
+        
+        //44. Given a person list, fetch the list of name
+        // -whose age is greater than 30
+        // -name should be unique
+        // -names should be in sorted order
+        List<StreamQuestions.Employee> filterdEmployees = employees
+            .stream()
+            .filter(e -> e.getAge() >= 30)
+            .distinct()
+            .sorted(Comparator.comparing(e -> e.getName()))
+            .collect(Collectors.toList());
+        System.out.println("Employee with age >= 30: " + filterdEmployees);
     }
 }
