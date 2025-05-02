@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.function.Supplier;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -46,6 +48,7 @@ public class StreamQuestions {
         final String[] mixedList = {"abc", "123", "456", "xyz"};
         final List<Integer> numberList1 = Arrays.asList(1, 2, 3, 4);
         final List<Integer> numberList2 = Arrays.asList(6, 7, 5, 9, 10);
+        final List<String> nameList = Arrays.asList("Alice", "Bob", "Anna", "Gary");
         final List<String> alphanumericList = Arrays.asList("a124", "1dsa78", "weq78985assd");
 
         final List<Employee> employees = new ArrayList<>();
@@ -419,5 +422,67 @@ public class StreamQuestions {
             .map(e -> e.getEmail().substring(e.getEmail().indexOf("@")))
             .collect(Collectors.groupingBy(d -> d, Collectors.counting()));
         System.out.println("Domain count: "+ emailDomainCount);
+
+        //34. Generate the first 10 numbers of the Fibonacci Sequence
+        List<Integer> fibonacciSequence = Stream
+            .iterate(new int[] {0, 1}, f -> new int[] {f[1], f[0] + f[1]})
+            .limit(10)
+            .map(f -> f[0])
+            .collect(Collectors.toList());
+        System.out.println("Fibonacci: " + fibonacciSequence);
+
+        //35. Convert list of integers to a list of their squares
+        List<Integer> squaredNumberList = numberList1
+            .stream()
+            .map(x -> x * x)
+            .collect(Collectors.toList());
+        System.out.println("Square elements of the list: " + squaredNumberList);
+
+        //36. Transform Person object stream into a single string
+        String employeeNamesString = employees
+            .stream()
+            .map(person -> person.getName().toUpperCase())
+            .collect(Collectors.joining("|"))
+            .toString();
+        System.out.println("Employee names string: " + employeeNamesString);
+
+        //37 Group list of strings by their first character and count the number of strings
+        Map<Character, Long> groupedCountByFirstChar = Arrays
+            .stream(commonString.split(" "))
+            .collect(Collectors.groupingBy(s -> s.charAt(0), Collectors.counting()));
+        System.out.println("Grouped by first character: " + groupedCountByFirstChar);
+
+        //38. Convert a list to a map
+        Map<String, List<StreamQuestions.Employee>> groupedEmployees = employees
+            .stream()
+            .collect(Collectors.groupingBy(e -> e.getName()));
+        System.out.println("Grouped employees: " + groupedEmployees);
+
+        //39 Multiply array elements
+        int totalProduct = Arrays
+            .stream(commonNumArr)
+            .reduce(1, (a, b) -> a * b);
+        System.out.println("Total product: " + totalProduct);
+        
+        //40. Can we reuse a stream in Java?
+        Supplier<Stream<String>> nameStream = () -> nameList.stream();
+        nameStream.get().forEach(System.out::println);
+        nameStream.get().count();
+
+        //41 Convert a list of string to uppercase and then concatenate
+        String uppercaseNames = nameList
+            .stream()
+            .map(e -> e.toUpperCase())
+            .collect(Collectors.joining(" "));
+        System.out.println("Upper case names: " + uppercaseNames);
+
+        uppercaseNames = nameList
+            .stream()
+            .map(e -> e.toUpperCase())
+            .reduce((s1, s2) -> s1 + " " + s2)
+            .orElse("");
+        System.out.println("Upper case names: " + uppercaseNames);
+
+        //42. 
     }
 }
