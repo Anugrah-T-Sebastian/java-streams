@@ -522,5 +522,17 @@ public class StreamQuestions {
             .sorted(Comparator.comparing(e -> e.getName()))
             .collect(Collectors.toList());
         System.out.println("Employee with age >= 30: " + filterdEmployees);
+
+        //45. Print distinct numbers which starts with "1" in descending order
+        List<Integer> numStartingWithOne = Arrays
+            .stream(commonNumArr)
+            .distinct()
+            .filter(x -> String.valueOf(x).startsWith("1"))
+            .mapToObj(x -> x)
+            .sorted(Comparator.reverseOrder())
+            .collect(Collectors.toList());
+        System.out.println("Number starting with 1: " + numStartingWithOne);
+
+        //46. Return comparison of a Person object based on first name and then last name
     }
 }
