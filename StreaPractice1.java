@@ -2,7 +2,9 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class StreaPractice1 {
     public static void main(String[] args) {
@@ -74,18 +76,114 @@ public class StreaPractice1 {
             .collect(Collectors.groupingBy(x -> x, Collectors.counting()));
 
         //9. Arrange the numbers in Descending/Ascending Order
+        List<Integer> reversedNumberList = Arrays
+            .stream(commonNumArr)
+            .boxed()
+            .sorted(Comparator.reverseOrder())
+            .collect(Collectors.toList());
+
         //10. Given an array, find the sum of unique elements
+        Integer sumOfDistinctNumbers = Arrays
+            .stream(commonNumArr)
+            .boxed()
+            .distinct()
+            .reduce(0, (a, b) -> a + b);
+
         //11. Given a string, find the first non-repeated character
+        String firstUniqueChar = Arrays
+            .stream(commonString.split(""))
+            .filter(s -> commonString.indexOf(s) == commonString.lastIndexOf(s))
+            .findFirst()
+            .get();
+
         //12. Given a string, find the first repeated character
+        String firstDuplicateChar = Arrays
+            .stream(commonString.split(""))
+            .filter(s -> commonString.indexOf(s) != commonString.lastIndexOf(s))
+            .findFirst()
+            .get();
+
         //13. Given an array of integers, group the numbers by the range
+        Map<Integer, List<Integer>> groupedByHundreds = Arrays
+            .stream(commonNumArr)
+            .mapToObj(x -> x)
+            .collect(Collectors.groupingBy(x -> x / 100, () -> new TreeMap<>(), Collectors.toList()));
+
         //14. Given a list of strings, create a list that contains only integers
+        List<Integer> filteredIntegersList = Arrays
+            .stream(mixedList)
+            .filter(x -> {
+                    try {
+                        Integer.parseInt(x);
+                        return true;
+                    } catch (Exception e) {
+                        return false;
+                    }
+            })
+            .map(Integer::parseInt)
+            .collect(Collectors.toList());
+
         //15. Find the products of the first two elements in an array
+        Integer limitedProduct = Arrays
+            .stream(commonNumArr)
+            .limit(2)
+            .boxed()
+            .reduce(1, (a, b) -> a * b);
+        
         //16. Group /Pair anagrams from a list of Strings
+        List<List<String>> anagramGroups = Arrays
+            .stream(commonString.split(" "))
+            .collect(Collectors.groupingBy(s -> {
+                char[] charArr = s.toCharArray();
+                Arrays.sort(charArr);
+                return charArr.toString();
+            }))
+            .values()
+            .stream()
+            .collect(Collectors.toList());
+
+        System.out.println("anagramGroups: " + anagramGroups);
+
         //17. Write a stream program to multiply alternative numbers in an array
+        int productOfEvenIndexedElements = IntStream
+            .range(0, commonNumArr.length)
+            .filter(x -> x % 2 == 0)
+            .map(x -> commonNumArr[x])
+            .reduce(1, (a, b) -> a * b);
+
         //18. Write a program to multiply 1st and last element, 2nd and 2nd last element
+        List<Integer> multipliedResults = IntStream
+            .range(0, commonNumArr.length)
+            .map(x -> commonNumArr[x] * commonNumArr[commonNumArr.length - x - 1])
+            .boxed()
+            .collect(Collectors.toList());
+
         //19. Write a stream program to move all zero’s to beginning of array
+        List<Integer> zerosMovedToLeft = Arrays
+            .stream(commonNumArr)
+            .boxed()
+            .collect(Collectors.groupingBy(x -> x != 0))
+            .values()
+            .stream()
+            .flatMap(x -> x.stream())
+            .collect(Collectors.toList());
+
+        System.out.println("zerosMovedToLeft: " + zerosMovedToLeft);
+
         //20. In a given array of integers, return true if it contains distinct values
+        Boolean distinctCheck = (numberList1
+            .stream()
+            .distinct()
+            .count() == numberList1.size());
+
         //21. Given the string[] group the strings based on the middle character
+        List<List<String>> groupedStringsByMidChar = Arrays
+            .stream(commonString.split(" "))
+            .collect(Collectors.groupingBy(x -> x.charAt(x.length() / 2)))
+            .values()
+            .stream()
+            .collect(Collectors.toList());
+            
         //22. Find the sum of all the elements in a list
         //23. Sort a list of strings in alphabetical order
         //24. Convert a list of integers to a list of their squares
