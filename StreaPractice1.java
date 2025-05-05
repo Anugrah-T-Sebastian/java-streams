@@ -3,6 +3,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -185,8 +186,22 @@ public class StreaPractice1 {
             .collect(Collectors.toList());
             
         //22. Find the sum of all the elements in a list
+        int totalSum = numberList1
+            .stream()
+            .mapToInt(x -> x)
+            .sum();
+
         //23. Sort a list of strings in alphabetical order
+        List<String> sortedNameList = nameList
+            .stream()
+            .sorted()
+            .collect(Collectors.toList());
+
         //24. Convert a list of integers to a list of their squares
+        List<Integer> squaredNumbers = numberList1
+            .stream()
+            .map(x -> x * x)
+            .collect(Collectors.toList());
         //25. Find and print the distinct odd numbers
         //26. Find the union of two lists of integers
         //27 Find the kth smallest element in a list of integers
