@@ -6,6 +6,7 @@ import java.util.TreeMap;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 public class StreaPractice1 {
     public static void main(String[] args) {
@@ -202,13 +203,69 @@ public class StreaPractice1 {
             .stream()
             .map(x -> x * x)
             .collect(Collectors.toList());
+
         //25. Find and print the distinct odd numbers
+        numberList1
+            .stream()
+            .filter(x -> x % 2 != 0)
+            .collect(Collectors.toList());
+
         //26. Find the union of two lists of integers
+        List<Integer> combinedNumberList = Stream
+            .concat(numberList1.stream(), numberList2.stream())
+            .collect(Collectors.toList());
+
         //27 Find the kth smallest element in a list of integers
+        Integer thirdSmallestInteger = numberList1
+            .stream()
+            .sorted()
+            .skip(2)
+            .findFirst()
+            .get();
+
         //28. Remove all non-numeric characters from a list
+        List<Integer> extractedIntegers = alphanumericList
+            .stream()
+            .map(s -> {
+                String numericString = Arrays
+                    .stream(s.split(""))
+                    .filter(c -> {
+                        try {
+                            Integer.parseInt(c);
+                            return true;
+                        } catch (Exception e) {
+                            return false;
+                        }
+                    })
+                    .collect(Collectors.joining());
+                return Integer.parseInt(numericString);
+            })
+            .collect(Collectors.toList());
+
+        extractedIntegers = alphanumericList
+            .stream()
+            .map(s -> Integer.parseInt(s.replace("^[0-9]+", "")))
+            .collect(Collectors.toList());
+
         //29. Find and print strings containing only digits
+        List<String> nonNumericStrings = Arrays
+            .stream(mixedList)
+            .filter(s -> s.replaceAll("^[0-9]+", "").length() == s.length())
+            .collect(Collectors.toList());
+        
         //30. Convert a list of strings to uppercase
+        List<String> uppercaseNameList = nameList
+            .stream()
+            .map(s -> s.toUpperCase())
+            .collect(Collectors.toList());
+
         //31. Calculate the average of all the numbers
+        numberList1
+            .stream()
+            .mapToInt(x -> x)
+            .average()
+            .getAsDouble();
+
         //32. Find the intersection of two lists using Java streams
         //33. Find the occurrence of domains using Java streams
         //34. Generate the first 10 numbers of the Fibonacci Sequence
