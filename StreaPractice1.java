@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -9,6 +10,40 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class StreaPractice1 {
+    public static class Employee {
+        String name;
+        int age;
+        List<String> email;
+
+        public Employee(String name, int age, List<String> email) {
+            this.name = name;
+            this.age = age;
+            this.email = email;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public List<String> getEmail() {
+            return email;
+        }
+
+        public int getAge() {
+            return this.age;
+        }
+
+        public void setEmail(List<String> email) {
+            this.email = email;
+        }
+
+
+    }
+
     public static void main(String[] args) {
 
         final String commonString = "I am learning streams API in Java in Java Environment";
@@ -18,6 +53,11 @@ public class StreaPractice1 {
         final List<Integer> numberList2 = Arrays.asList(6, 7, 5, 9, 10);
         final List<String> nameList = Arrays.asList("Alice", "Bob", "Anna", "Gary");
         final List<String> alphanumericList = Arrays.asList("a124", "1dsa78", "weq78985assd");
+
+        final List<Employee> employees = new ArrayList<>();
+        employees.add(new Employee("ABC", 26, Arrays.asList("abc@abc.com")));
+        employees.add(new Employee("PQR", 30, Arrays.asList("pqr@pqr.com")));
+        employees.add(new Employee("XYZ", 35, Arrays.asList("xyz@xyz.com")));
 
         System.out.println();
         System.out.println();
@@ -267,11 +307,41 @@ public class StreaPractice1 {
             .getAsDouble();
 
         //32. Find the intersection of two lists using Java streams
+        List<Integer> intersectionList = numberList1
+            .stream()
+            .filter(x -> numberList2.contains(x))
+            .collect(Collectors.toList());
+
         //33. Find the occurrence of domains using Java streams
+        Map<String, Long> emailDomainCount = employees
+            .stream()
+            .map(employee -> employee.getEmail().get(0).substring(employee.getEmail().get(0).indexOf("@")))
+            .collect(Collectors.groupingBy(x -> x, Collectors.counting()));
+
         //34. Generate the first 10 numbers of the Fibonacci Sequence
+        List<Integer> fibonacciSequence = Stream
+            .iterate(new int[] {1, 1}, arr -> new int[] {arr[1], arr[0] + arr[1]})
+            .limit(10)
+            .map(arr -> arr[0])
+            .collect(Collectors.toList());
+
         //35. Convert list of integers to a list of their squares
+        List<Integer> squaredNumberList = numberList1
+            .stream()
+            .map(x -> x * x)
+            .collect(Collectors.toList());
+
         //36. Transform Person object stream into a single string
+        String employeeNamesJoined = employees
+            .stream()
+            .map(o -> o.getName().toUpperCase())
+            .collect(Collectors.joining("|"));
+
         //37 Group list of strings by their first character and count the number of strings
+        Map<Character, List<String>> groupedNamesByFirstCharacter = nameList
+            .stream()
+            .collect(Collectors.groupingBy(x -> x.charAt(0)));
+            
         //38. Convert a list to a map
         //39 Multiply array elements
         //40. Can we reuse a stream in Java?
