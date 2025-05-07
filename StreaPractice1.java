@@ -282,10 +282,10 @@ public class StreaPractice1 {
             })
             .collect(Collectors.toList());
 
-        extractedIntegers = alphanumericList
-            .stream()
-            .map(s -> Integer.parseInt(s.replace("^[0-9]+", "")))
-            .collect(Collectors.toList());
+        // extractedIntegers = alphanumericList
+        //     .stream()
+        //     .map(s -> Integer.parseInt(s.replace("^[0-9]+", "")))
+        //     .collect(Collectors.toList());
 
         //29. Find and print strings containing only digits
         List<String> nonNumericStrings = Arrays
@@ -343,6 +343,24 @@ public class StreaPractice1 {
             .collect(Collectors.groupingBy(x -> x.charAt(0)));
             
         //38. Convert a list to a map
+        numberList1
+            .stream()
+            .map(x-> {
+                System.out.println("TEST:3");
+                return x;
+            });
+        List<Integer> test = List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+        test
+            .stream()
+            .filter(x -> {
+                System.out.println("TEST:0");
+                return x % 5 == 0;
+            })
+            .map(x -> {
+                System.out.println("TEST: 1");
+                return x; // Ensure the lambda returns a value
+            })
+            .findFirst();
         //39 Multiply array elements
         //40. Can we reuse a stream in Java?
         //41 Convert a list of string to uppercase and then concatenate
