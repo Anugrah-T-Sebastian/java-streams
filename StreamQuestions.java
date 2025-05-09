@@ -533,6 +533,19 @@ public class StreamQuestions {
             .collect(Collectors.toList());
         System.out.println("Number starting with 1: " + numStartingWithOne);
 
-        //46. Return comparison of a Person object based on first name and then last name
+        //46. How many times will TEST be printed
+        List<Integer> num = List.of(1, 2 , 3, 4, 5 ,6, 7, 8, 9, 10);
+        num
+            .stream()
+            .filter(x -> {
+                System.out.println("TEST:0");
+                return x % 5 == 0;
+            })
+            .map(x -> {
+                System.out.println("TEST:1");
+                return x;
+            })
+            .findFirst()
+            .orElse(0);
     }
 }
